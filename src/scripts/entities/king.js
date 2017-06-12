@@ -27,6 +27,10 @@ export default class King {
     return this.resources.gold
   }
 
+  getItemsByType(type) {
+    return this[type]
+  }
+
   getFood() {
     return this.resources.food
   }

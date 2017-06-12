@@ -46,24 +46,28 @@ export default class Player extends King {
 
   tick(ts) {
     this.builds.forEach(build => {
-      if (ts >= build.getNextHarvestTs()) {
-        build.setNextHarvestTs()
+      build.setProgress(ts)
 
+      if (ts >= build.getNextHarvestTs()) {
         switch(build.type) {
           case 'mine':
             this.addGold(build.gold)
+            build.setNextHarvestTs()
             break
           case 'farm':
             this.addFood(build.food)
+            build.setNextHarvestTs()
             break
           case 'house':
             if (this.resources.food < build.food) {
-              console.log('food empty')
+              build.setStatus('paused')
               return
             }
 
             this.addGold(build.gold)
             this.removeFood(build.food)
+            build.setNextHarvestTs()
+            build.setStatus('working')
             break
         }
       }

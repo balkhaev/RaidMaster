@@ -14,6 +14,8 @@ export class Game {
     this.player = new Player(player)
     this.shop = new Shop({ goods: this.resources })
 
+    this.ts = null
+
     this.on = emitter.on
     this.off = emitter.off
     this.emit = emitter.emit
@@ -26,6 +28,8 @@ export class Game {
 
   tick(ts) {
     this.player.tick(ts)
+
+    this.ts = ts
 
     this.emit('tick', this)
   }

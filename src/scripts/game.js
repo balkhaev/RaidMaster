@@ -13,9 +13,9 @@ Vue.use(ElementUI)
 
 const game = new Game({
   resources: {
-    items,
+    builds,
     units,
-    builds
+    items
   },
   levels,
   player: JSON.parse(localStorage.getItem('player')) || {},

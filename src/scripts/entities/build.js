@@ -7,7 +7,14 @@ export default class Build {
     this.type = type
     this.title = title
     this.interval = interval
+    this.progress = 0
+    this.status = 'working'
+
     this.setNextHarvestTs()
+  }
+
+  setStatus(status) {
+    this.status = status
   }
 
   getNextHarvestTs() {
@@ -20,7 +27,8 @@ export default class Build {
     this.nextHarvestTs = date.getTime()
   }
 
-  getPercentage(ts) {
-    return ts / this.nextHarvestTs * 100
+  setProgress(ts) {
+    const progress = Math.floor(100 - ((this.nextHarvestTs - ts) / (this.interval * 1000) * 100))
+    this.progress = progress > 100 ? 100 : progress
   }
 }

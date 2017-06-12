@@ -14,4 +14,8 @@ export default class Shop {
   getGood(type, id) {
     return this.goods[type][id]
   }
+
+  getGoodsByType(type) {
+    return this.goods[type]
+  }
 }

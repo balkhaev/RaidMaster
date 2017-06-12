@@ -13,6 +13,8 @@
 - PVP
 - Торговля
 - Infinity progress (Возраждения)
+- Расы
+- Советники
 
 ## Технологии
 - View - [Vue.js](https://ru.vuejs.org)
