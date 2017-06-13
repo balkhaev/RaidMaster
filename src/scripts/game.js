@@ -1,20 +1,21 @@
-import mitt from '../utils/mitt'
+import mitt from './utils/mitt'
 
-import Shop from '../entities/shop'
-import Player from '../entities/player'
+import Shop from './resources/shop'
+import Player from './resources/player'
+import Resources from './resources/resources'
 
 export class Game {
   constructor({ resources = {}, levels = {}, tickInterval = 100, player = {}, shop = {} } = {}) {
     const emitter = mitt()
 
+    this.ts = null
+
     this.tickInterval = tickInterval
-    this.resources = resources
     this.levels = levels
 
+    this.resources = new Resources(resources)
     this.player = new Player(player)
     this.shop = new Shop(shop)
-
-    this.ts = null
 
     this.on = emitter.on
     this.off = emitter.off
@@ -28,6 +29,7 @@ export class Game {
 
   tick(ts) {
     this.player.tick(ts)
+    this.resources.tick(ts)
 
     this.ts = ts
 

@@ -1,20 +1,26 @@
 import Build from './build'
 
-export default class Farm extends Build {
+export default class Mine extends Build {
   constructor({ consumption, profit, ...opts }) {
     super(opts)
-    this.type = 'farm'
-    this.foodProfit = profit
+    this.type = 'mine'
+    this.goldProfit = profit
     this.peopleConsumption = consumption
   }
 
   getProfit() {
-    return this.foodProfit * this.level
+    return this.goldProfit * this.level
   }
 
   getConsumption() {
     return {
       people: this.peopleConsumption
     }
+  }
+
+  complete(game) {
+    game.player.addGold(this.getProfit())
+
+    this.setNextTs()
   }
 }

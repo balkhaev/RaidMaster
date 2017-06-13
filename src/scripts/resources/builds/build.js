@@ -13,6 +13,14 @@ export default class Build {
     this.setNextTs()
   }
 
+  getProgress() {
+    return this.progress
+  }
+
+  getUpgradeCost() {
+    return this.cost * this.level / 2
+  }
+
   upgrade(count = 1) {
     this.level += count
   }
@@ -33,11 +41,7 @@ export default class Build {
     this.progress = progress > 100 ? 100 : progress
   }
 
-  getProfit() {
-    return this.gold * this.level
-  }
-
-  getUpgradeCost() {
-    return this.cost * this.level / 2
+  complete() {
+    this.setNextTs()
   }
 }

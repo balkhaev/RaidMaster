@@ -7,7 +7,7 @@
         </div>
 
         <el-tabs type="border-card">
-            <el-tab-pane v-for="resourceType in Object.keys(game.resources)" :label="translations[resourceType]" :key="resourceType">
+            <el-tab-pane v-for="resourceType in game.resources.types" :label="translations[resourceType]" :key="resourceType">
                 <h3>Куплено</h3>
                 <div v-for="item in game.player.getItemsByType(resourceType)">
                     {{ item.title }}
@@ -32,7 +32,7 @@
                             label="Действия"
                             width="130">
                         <template scope="scope">
-                            <el-button @click="game.player.buy(resourceType, scope.row.id)" :disabled="!game.player.buyAvailable(resourceType, scope.row.id)">Купить</el-button>
+                            <el-button @click="game.shop.buy(resourceType, scope.row.id)" :disabled="!game.shop.buyAvailable(resourceType, scope.row.id)">Купить</el-button>
                         </template>
                     </el-table-column>
                 </el-table>

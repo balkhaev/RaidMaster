@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import ElementUI from 'element-ui'
-import Game from './lib/game'
+
+import Game from './game'
 import Root from './root.vue'
 import config from './config.json'
 
