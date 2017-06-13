@@ -1,4 +1,4 @@
-import game from '../game'
+import game from '../main'
 import King from './king'
 
 import Build from './build'
@@ -6,24 +6,54 @@ import Unit from './unit'
 import Item from './item'
 
 export default class Player extends King {
-  getLevelLimits() {
-    return game.resources.levels[this.level]
+  count(invType, itemType) {
+    return this.inventory[invType].filter(item => item.type === itemType).length
+  }
+
+  getLevelLimits(invType, itemType) {
+    let levelLimits = game.levels[this.level]
+
+    if (invType !== undefined) {
+      levelLimits = levelLimits[invType]
+
+      if (itemType !== undefined) {
+        levelLimits = levelLimits[itemType]
+      }
+    }
+
+    return levelLimits
   }
 
   add(type, item) {
     switch(type) {
       case 'builds':
-        this.builds.push(new Build(item))
+        this.inventory.builds.push(new Build(item))
         break
       case 'units':
-        this.units.push(new Unit(item))
+        this.inventory.units.push(new Unit(item))
         break
       case 'items':
-        this.items.push(new Item(item))
+        this.inventory.items.push(new Item(item))
         break
       default:
         throw Error('Unknown item type')
     }
+  }
+
+  buyAvailable(type, id) {
+    const item = game.shop.getGood(type, id)
+    const itemTypeLimit = this.getLevelLimits(type, item.type).buy
+    const itemTypeCount = this.count(type, item.type)
+
+    return itemTypeCount < itemTypeLimit
+  }
+
+  upgradeAvailable(type, id) {
+    const item = game.shop.getGood(type, id)
+    const itemTypeLimit = this.getLevelLimits(type, item.type).upgrade
+    const itemTypeCount = this.count(type, item.type)
+
+    return true
   }
 
   buy(type, id) {
@@ -39,24 +69,30 @@ export default class Player extends King {
     this.add(type, good)
   }
 
-  upgrade(id) {
-    console.log('upgrade')
-    //...
+  upgrade(type, id) {
+    const item = game.player.getItem(type, id)
+
+    this.removeGold(item.getUpgradeCost())
+    item.upgrade()
   }
 
   tick(ts) {
-    this.builds.forEach(build => {
+    this.inventory.builds.forEach(build => {
       build.setProgress(ts)
 
       if (ts >= build.getNextHarvestTs()) {
         switch(build.type) {
           case 'mine':
-            this.addGold(build.gold)
+            this.addGold(build.getProfit())
+
             build.setNextHarvestTs()
+
             break
           case 'farm':
             this.addFood(build.food)
+
             build.setNextHarvestTs()
+
             break
           case 'house':
             if (this.resources.food < build.food) {
@@ -64,10 +100,12 @@ export default class Player extends King {
               return
             }
 
-            this.addGold(build.gold)
+            this.addGold(build.getProfit())
             this.removeFood(build.food)
+
             build.setNextHarvestTs()
             build.setStatus('working')
+
             break
         }
       }

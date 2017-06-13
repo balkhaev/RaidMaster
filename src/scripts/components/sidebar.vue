@@ -7,30 +7,14 @@
         </div>
 
         <el-tabs type="border-card">
-            <el-tab-pane v-for="resourceType in Object.keys(game.resources)" :label="translations[resourceType]">
+            <el-tab-pane v-for="resourceType in Object.keys(game.resources)" :label="translations[resourceType]" :key="resourceType">
                 <h3>Куплено</h3>
-                <el-table
-                        :data="game.player.getItemsByType(resourceType)"
-                        style="width: 100%">
-                    <el-table-column
-                            prop="title"
-                            label="Название">
-                    </el-table-column>
-                    <el-table-column
-                            label="Прогресс"
-                            width="200">
-                        <template scope="scope">
-                            <el-progress :show-text="false" :stroke-width="18" :percentage="scope.row.progress" :status="scope.row.status === 'paused' ? 'exception' : 'success'"></el-progress>
-                        </template>
-                    </el-table-column>
-                    <el-table-column
-                            label="Действия"
-                            width="130">
-                        <template scope="scope">
-                            <el-button @click="goodClick(resourceType, scope.$index)">Улучшить</el-button>
-                        </template>
-                    </el-table-column>
-                </el-table>
+                <div v-for="item in game.player.getItemsByType(resourceType)">
+                    {{ item.title }}
+                    {{ item.getProfit() }}
+                    <el-button @click="game.player.upgrade(resourceType, item.id)" :disabled="!game.player.upgradeAvailable(resourceType, item.id)">Улучшить</el-button>
+                    <el-progress :percentage="item.progress" :status="item.status === 'paused' ? 'exception' : 'success'"></el-progress>
+                </div>
                 <h3>Магазин</h3>
                 <el-table
                         :data="game.shop.getGoodsByType(resourceType)"
@@ -48,7 +32,7 @@
                             label="Действия"
                             width="130">
                         <template scope="scope">
-                            <el-button @click="goodClick(resourceType, scope.$index)">Купить</el-button>
+                            <el-button @click="game.player.buy(resourceType, scope.row.id)" :disabled="!game.player.buyAvailable(resourceType, scope.row.id)">Купить</el-button>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -67,22 +51,6 @@ export default {
         items: 'Вещи'
       }
     }
-  },
-  methods: {
-    goodClick(type, index) {
-      const goodId = this.game.shop.goods[type][index].id
-
-      if (this.game.player.exists(type, goodId)) {
-        this.game.player.upgrade(type, goodId)
-      } else {
-        this.game.player.buy(type, goodId)
-      }
-    }
-  },
-  created() {
-    setTimeout(() => {
-
-    })
   }
 }
 </script>

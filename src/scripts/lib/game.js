@@ -4,7 +4,7 @@ import Shop from '../entities/shop'
 import Player from '../entities/player'
 
 export class Game {
-  constructor({ resources = {}, levels = {}, tickInterval = 100, player = {} } = {}) {
+  constructor({ resources = {}, levels = {}, tickInterval = 100, player = {}, shop = {} } = {}) {
     const emitter = mitt()
 
     this.tickInterval = tickInterval
@@ -12,7 +12,7 @@ export class Game {
     this.levels = levels
 
     this.player = new Player(player)
-    this.shop = new Shop({ goods: this.resources })
+    this.shop = new Shop(shop)
 
     this.ts = null
 

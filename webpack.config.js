@@ -7,7 +7,7 @@ const path = require('path')
 const ENV = process.argv.indexOf('-p') !== -1 ? 'production' : process.env.NODE_ENV || 'development'
 
 const opts = {
-  entries: ['babel-polyfill', './src/scripts/game.js', './src/styles/index.sass'],
+  entries: ['babel-polyfill', './src/scripts/main.js', './src/styles/index.sass'],
   styleName: '[name].[hash].css',
   scriptName: '[name].[hash].js'
 }

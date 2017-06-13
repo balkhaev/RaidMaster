@@ -11,14 +11,19 @@ import levels from './data/levels'
 
 Vue.use(ElementUI)
 
+const resources = {
+  builds,
+  units,
+  items
+}
+
 const game = new Game({
-  resources: {
-    builds,
-    units,
-    items
-  },
+  resources,
   levels,
-  player: JSON.parse(localStorage.getItem('player')) || {},
+  shop: {
+    goods: resources
+  },
+  player: JSON.parse(localStorage.getItem('player')) || { resources: { gold: 10 } },
   tickInterval: config.tickInterval
 })
 

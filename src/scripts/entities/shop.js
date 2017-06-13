@@ -12,7 +12,7 @@ export default class Shop {
   }
 
   getGood(type, id) {
-    return this.goods[type][id]
+    return this.goods[type].find(good => good.id === id)
   }
 
   getGoodsByType(type) {
