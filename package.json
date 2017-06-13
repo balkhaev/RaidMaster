@@ -2,14 +2,18 @@
   "name": "raidmaster",
   "version": "0.0.0",
   "description": "RaidMaster",
-  "main": "index.js",
+  "main": "src/main.js",
   "scripts": {
     "start": "npm run clear && npm run server",
     "clear": "rimraf dist",
     "server": "webpack-dev-server"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/balkhaev/raidmaster.git"
+  },
   "keywords": [],
-  "author": "",
+  "author": "Balkhaev",
   "license": "ISC",
   "devDependencies": {
     "css-loader": "^0.28.4",
@@ -35,8 +39,6 @@
     "babel-preset-stage-0": "^6.24.1",
     "element-ui": "^1.3.6",
     "file-loader": "^0.11.2",
-    "redux": "^3.6.0",
-    "redux-thunk": "^2.2.0",
     "vue": "^2.3.4",
     "vue-loader": "^12.2.1",
     "vue-style-loader": "^3.0.1",
