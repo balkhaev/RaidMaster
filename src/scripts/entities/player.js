@@ -80,7 +80,7 @@ export default class Player extends King {
     this.inventory.builds.forEach(build => {
       build.setProgress(ts)
 
-      if (ts >= build.getNextHarvestTs()) {
+      if (build.getProgress() === 100) {
         switch(build.type) {
           case 'mine':
             this.addGold(build.getProfit())

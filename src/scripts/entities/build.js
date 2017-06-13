@@ -23,10 +23,6 @@ export default class Build {
     this.status = status
   }
 
-  getNextHarvestTs() {
-    return this.nextHarvestTs
-  }
-
   setNextHarvestTs(date = new Date()) {
     date.setSeconds(date.getSeconds() + this.interval)
 
@@ -36,6 +32,10 @@ export default class Build {
   setProgress(ts) {
     const progress = Math.floor(100 - ((this.nextHarvestTs - ts) / (this.interval * 1000) * 100))
     this.progress = progress > 100 ? 100 : progress
+  }
+
+  getProgress() {
+    return this.progress
   }
 
   getProfit() {
