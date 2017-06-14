@@ -1,5 +1,3 @@
-import game from '../main'
-
 import buildManager from './builds/manager'
 import itemManager from './items/manager'
 import unitManager from './units/manager'
@@ -27,9 +25,9 @@ export default class Resources {
     }
   }
 
-  tick(ts, items = game.player.inventory) {
+  processInventory(ts, inventory) {
     this.types.forEach(type => {
-      this[type].tick(ts, items[type])
+      this[type].tick(ts, inventory[type])
     })
   }
 }

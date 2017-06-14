@@ -28,12 +28,23 @@ export class Game {
   }
 
   tick(ts) {
-    this.player.tick(ts)
-    this.resources.tick(ts)
-
     this.ts = ts
 
+    this.player.tick(ts)
+    this.resources.processInventory(ts, this.player.inventory)
+
     this.emit('tick', this)
+  }
+
+  getMap() {
+    return [
+      [
+        [0,0,0,0],
+        [0,0,0,0],
+        [0,0,0,0],
+        [0,0,0,0]
+      ]
+    ];
   }
 
   start() {

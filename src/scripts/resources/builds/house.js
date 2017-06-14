@@ -8,27 +8,4 @@ export default class House extends Build {
     this.peopleCapacity = capacity
     this.goldProfit = profit
   }
-
-  getProfit() {
-    return this.goldProfit * this.level
-  }
-
-  getConsumption() {
-    return {
-      food: this.foodConsumption
-    }
-  }
-
-  complete(game) {
-    if (game.player.resources.food < this.food) {
-      this.setStatus('paused')
-      return
-    }
-
-    game.player.addGold(this.getProfit())
-    game.player.removeFood(this.foodConsumption)
-
-    this.setNextTs()
-    this.setStatus('working')
-  }
 }

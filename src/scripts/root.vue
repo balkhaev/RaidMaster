@@ -11,9 +11,10 @@
                     <el-menu-item index="2-3">item three</el-menu-item>
                 </el-submenu>
                 <el-menu-item index="3"><a href="https://www.ele.me" target="_blank">Orders</a></el-menu-item>
+                <el-menu-item index="4" @click="game.processClick">Золото</el-menu-item>
             </el-menu>
             <div id="game">
-                <el-button @click="buttonClick">Золото</el-button>
+                <gamemap></gamemap>
             </div>
         </div>
     </div>
@@ -21,6 +22,7 @@
 
 <script>
 import sidebar from './components/sidebar.vue'
+import map from './components/map.vue'
 
 export default {
   data() {
@@ -28,13 +30,9 @@ export default {
       activeIndex: '1'
     }
   },
-  methods: {
-    buttonClick() {
-      this.game.processClick()
-    }
-  },
   components: {
-    sidebar
+    sidebar,
+    gamemap: map
   }
 }
 </script>

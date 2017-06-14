@@ -7,20 +7,4 @@ export default class Mine extends Build {
     this.goldProfit = profit
     this.peopleConsumption = consumption
   }
-
-  getProfit() {
-    return this.goldProfit * this.level
-  }
-
-  getConsumption() {
-    return {
-      people: this.peopleConsumption
-    }
-  }
-
-  complete(game) {
-    game.player.addGold(this.getProfit())
-
-    this.setNextTs()
-  }
 }

@@ -1,30 +1,46 @@
 export default [
   {
     id: 0,
-    title: 'Дом',
+    title: 'Лачуга',
     type: 'house',
-    profit: 5,
-    hp: 100,
-    consumption: 5,
-    cost: 10,
+    consumption: {
+      food: 5
+    },
+    profit: {
+      gold: 5
+    },
+    cost: {
+      gold: 10
+    },
+    capacity: {
+      civilians: 2
+    },
     interval: 5
   },
   {
     id: 1,
     title: 'Ферма риса',
     type: 'farm',
-    profit: 10,
-    hp: 100,
-    cost: 10,
+    workers: 1,
     interval: 15,
+    profit: {
+      food: 10
+    },
+    cost: {
+      gold: 10
+    },
   },
   {
     id: 2,
     title: 'Рудник золота',
     type: 'mine',
-    profit: 10,
-    hp: 100,
-    cost: 20,
+    worker: 1,
+    profit: {
+      gold: 10
+    },
+    cost: {
+      gold: 20
+    },
     interval: 20,
   },
   {
@@ -32,8 +48,9 @@ export default [
     title: 'Рынок',
     type: 'general',
     profit: 100,
-    hp: 100,
-    cost: 30,
+    cost: {
+      gold: 30
+    },
     interval: 30,
   }
 ]

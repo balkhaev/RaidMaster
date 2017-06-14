@@ -1,12 +1,15 @@
 export default class Build {
-  constructor({ id, title, hp, interval, cost, level = 1 } = {}) {
+  constructor({ id, title, profit, workers, consumption, interval, cost, capacity, level = 1 } = {}) {
     this.id = id
-    this.hp = hp
     this.cost = cost
     this.title = title
     this.level = level
+    this.profit = profit
     this.status = 'working'
+    this.workers = workers
     this.interval = interval
+    this.capacity = capacity
+    this.consumption = consumption
     this.progress = 0
     this.nextTs = null
 
@@ -41,7 +44,31 @@ export default class Build {
     this.progress = progress > 100 ? 100 : progress
   }
 
-  complete() {
-    this.setNextTs()
+  getProfit(profitType) {
+    return this.profit[profitType] * this.level
+  }
+
+  complete(game) {
+    if (this.consumption) {
+      Object.keys(this.consumption).forEach(consumptionType => {
+        if (game.player.resources[consumptionType] < this.consumption[consumptionType]) {
+          this.setStatus('paused')
+        } else {
+          game.player.removeResources(consumptionType, this.consumption[consumptionType])
+        }
+      })
+    }
+
+    if (this.workers && game.player.countFreeCivilians() < this.workers) {
+      this.setStatus('paused')
+    }
+
+    if (this.status === 'working' && this.profit) {
+      Object.keys(this.profit).forEach(profitType => {
+          game.player.addResources(profitType, this.getProfit(profitType))
+      })
+
+      this.setNextTs()
+    }
   }
 }

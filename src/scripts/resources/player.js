@@ -13,6 +13,11 @@ export default class Player {
       gold,
       food
     }
+    this.capacity = {
+      civilians: 0,
+      food: 100,
+      gold: 100
+    }
   }
 
   changeUsername(username) {
@@ -29,22 +34,6 @@ export default class Player {
 
   getGold() {
     return this.resources.gold
-  }
-
-  getFood() {
-    return this.resources.food
-  }
-
-  getItems() {
-    return this.inventory.items
-  }
-
-  getUnits() {
-    return this.inventory.units
-  }
-
-  getBuilds() {
-    return this.inventory.builds
   }
 
   exists(type, id) {
@@ -93,7 +82,29 @@ export default class Player {
     return levelLimits
   }
 
-  add(type, data) {
+  addResources(type, count) {
+    switch(type) {
+      case 'gold':
+        this.addGold(count)
+        break
+      case 'food':
+        this.addFood(count)
+        break
+    }
+  }
+
+  removeResources(type, count) {
+    switch(type) {
+      case 'gold':
+        this.removeGold(count)
+        break
+      case 'food':
+        this.removeFood(count)
+        break
+    }
+  }
+
+  addToInventory(type, data) {
     this.inventory[type].push(game.resources.create(type, data))
   }
 
@@ -110,6 +121,10 @@ export default class Player {
 
     this.removeGold(item.getUpgradeCost())
     item.upgrade()
+  }
+
+  countFreeCivilians() {
+    return 1
   }
 
   tick(ts) {

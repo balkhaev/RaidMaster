@@ -1,5 +1,3 @@
-import game from '../main'
-
 export default class Shop {
   constructor({ goods = {} } = {}) {
     this.goods = goods
@@ -17,23 +15,23 @@ export default class Shop {
     return this.goods[type]
   }
 
-  buy(type, id) {
+  buy(buyer, type, id) {
     const good = this.getGood(type, id);
 
-    if (game.player.getGold() < good.cost) {
+    if (buyer.getGold() < good.cost) {
       console.log('no money bitch')
       return
     }
 
-    game.player.removeGold(good.cost)
+    buyer.removeGold(good.cost)
 
-    game.player.add(type, good)
+    buyer.addToInventory(type, good)
   }
 
-  buyAvailable(type, id) {
+  buyAvailable(buyer, type, id) {
     const item = this.getGood(type, id)
-    const itemTypeLimit = game.player.getLevelLimits(type, item.type).buy
-    const itemTypeCount = game.player.count(type, item.type)
+    const itemTypeLimit = buyer.getLevelLimits(type, item.type).buy
+    const itemTypeCount = buyer.count(type, item.type)
 
     return itemTypeCount < itemTypeLimit
   }

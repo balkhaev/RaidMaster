@@ -24,15 +24,19 @@
                             label="Название">
                     </el-table-column>
                     <el-table-column
-                            prop="cost"
                             label="Цена"
                             width="100">
+                        <template scope="scope">
+                            <span v-for="(cost, costType) in scope.row.cost">
+                                {{cost}} {{costType}}
+                            </span>
+                        </template>
                     </el-table-column>
                     <el-table-column
                             label="Действия"
                             width="130">
                         <template scope="scope">
-                            <el-button @click="game.shop.buy(resourceType, scope.row.id)" :disabled="!game.shop.buyAvailable(resourceType, scope.row.id)">Купить</el-button>
+                            <el-button @click="game.shop.buy(game.player, resourceType, scope.row.id)" :disabled="!game.shop.buyAvailable(game.player, resourceType, scope.row.id)">Купить</el-button>
                         </template>
                     </el-table-column>
                 </el-table>
