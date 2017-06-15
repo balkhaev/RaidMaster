@@ -11,8 +11,14 @@
                 <h3>Куплено</h3>
                 <div v-for="item in game.player.getItemsByType(resourceType)">
                     {{ item.title }}
-                    {{ item.getProfit() }}
-                    <el-button @click="game.player.upgrade(resourceType, item.id)" :disabled="!game.player.upgradeAvailable(resourceType, item.id)">Улучшить</el-button>
+                    <span v-for="(profit, profitType) in item.getProfit()">
+                        {{profit}} {{profitType}}
+                    </span>
+                    <el-button @click="game.player.upgrade(resourceType, item.id)" :disabled="!game.player.checkResources(item.getUpgradeCost())">
+                        <span v-for="(upgradeCost, upgradeType) in item.getUpgradeCost()">
+                            {{upgradeCost}} {{upgradeType}}
+                        </span>
+                    </el-button>
                     <el-progress :percentage="item.progress" :status="item.status === 'paused' ? 'exception' : 'success'"></el-progress>
                 </div>
                 <h3>Магазин</h3>

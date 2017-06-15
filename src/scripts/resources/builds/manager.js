@@ -3,10 +3,13 @@ import game from '../../main'
 import Farm from './farm'
 import Mine from './mine'
 import House from './house'
+import Build from './build'
 import General from './general'
 
 export default {
   create(data) {
+    return new Build(data)
+
     switch (data.type) {
       case 'farm':
         return new Farm(data)
@@ -27,7 +30,7 @@ export default {
       build.setProgress(ts)
 
       if (build.getProgress() === 100) {
-        build.complete(game)
+        build.complete(game.player)
       }
     })
   }

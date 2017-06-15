@@ -15,7 +15,7 @@ export default class Player {
     }
     this.capacity = {
       civilians: 0,
-      food: 100,
+      food: 1000,
       gold: 100
     }
   }
@@ -36,11 +36,11 @@ export default class Player {
     return this.resources.gold
   }
 
-  exists(type, id) {
+  existsInventoryItem(type, id) {
     return this.inventory[type].map(item => item.id).indexOf(id) > -1
   }
 
-  getItem(type, id) {
+  getInventoryItem(type, id) {
     return this.inventory[type].find(item => item.id === id)
   }
 
@@ -82,7 +82,7 @@ export default class Player {
     return levelLimits
   }
 
-  addResources(type, count) {
+  addResource(type, count) {
     switch(type) {
       case 'gold':
         this.addGold(count)
@@ -93,7 +93,13 @@ export default class Player {
     }
   }
 
-  removeResources(type, count) {
+  addResources(resources) {
+    Object.keys(resources).forEach(resourceType => {
+      this.addResource(resourceType, resources[resourceType])
+    })
+  }
+
+  removeResource(type, count) {
     switch(type) {
       case 'gold':
         this.removeGold(count)
@@ -102,6 +108,20 @@ export default class Player {
         this.removeFood(count)
         break
     }
+  }
+
+  removeResources(resources) {
+    if (!this.checkResources(resources)) {
+      throw Error('Insufficient resources')
+    }
+
+    Object.keys(resources).forEach(resourceType => {
+      this.removeResource(resourceType, resources[resourceType])
+    })
+  }
+
+  checkResources(resources) {
+    return Object.keys(resources).some(resourceType => resources[resourceType] <= this.resources[resourceType])
   }
 
   addToInventory(type, data) {
@@ -117,9 +137,13 @@ export default class Player {
   }
 
   upgrade(type, id) {
-    const item = this.getItem(type, id)
+    const item = this.getInventoryItem(type, id)
 
-    this.removeGold(item.getUpgradeCost())
+    if (!this.checkResources(item.getUpgradeCost())) {
+      throw Error('Insufficient resources')
+    }
+
+    this.removeResources(item.getUpgradeCost())
     item.upgrade()
   }
 

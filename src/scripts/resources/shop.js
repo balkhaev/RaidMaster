@@ -18,12 +18,12 @@ export default class Shop {
   buy(buyer, type, id) {
     const good = this.getGood(type, id);
 
-    if (buyer.getGold() < good.cost) {
+    if (!buyer.checkResources(good.cost)) {
       console.log('no money bitch')
       return
     }
 
-    buyer.removeGold(good.cost)
+    buyer.removeResources(good.cost)
 
     buyer.addToInventory(type, good)
   }

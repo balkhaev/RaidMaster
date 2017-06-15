@@ -24,7 +24,7 @@ const game = new Game({
   shop: {
     goods: resources
   },
-  player: JSON.parse(localStorage.getItem('player')) || { resources: { gold: 10 } },
+  player: JSON.parse(localStorage.getItem('player')) || { resources: { gold: 10, food: 100 } },
   tickInterval: config.tickInterval
 })
 

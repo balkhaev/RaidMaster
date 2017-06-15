@@ -21,7 +21,13 @@ export default class Build {
   }
 
   getUpgradeCost() {
-    return this.cost * this.level / 2
+    const cost = {}
+
+    Object.keys(this.cost).forEach(costType => {
+      cost[costType] = Math.floor(this.cost[costType] * this.level / 1.5)
+    })
+
+    return cost
   }
 
   upgrade(count = 1) {
@@ -44,29 +50,35 @@ export default class Build {
     this.progress = progress > 100 ? 100 : progress
   }
 
-  getProfit(profitType) {
-    return this.profit[profitType] * this.level
-  }
-
-  complete(game) {
-    if (this.consumption) {
-      Object.keys(this.consumption).forEach(consumptionType => {
-        if (game.player.resources[consumptionType] < this.consumption[consumptionType]) {
-          this.setStatus('paused')
-        } else {
-          game.player.removeResources(consumptionType, this.consumption[consumptionType])
-        }
-      })
+  getProfit(profitType = false) {
+    if (profitType) {
+      return this.profit[profitType]
     }
 
-    if (this.workers && game.player.countFreeCivilians() < this.workers) {
+    const profit = {}
+
+    Object.keys(this.profit).forEach(profitType => {
+      profit[profitType] = this.profit[profitType] * this.level
+    })
+
+    return profit
+  }
+
+  complete(player) {
+    if (this.workers && player.countFreeCivilians() < this.workers) {
       this.setStatus('paused')
     }
 
+    if (this.consumption) {
+      if (!player.checkResources(this.consumption)) {
+        this.setStatus('paused')
+      } else {
+        player.removeResources(this.consumption)
+      }
+    }
+
     if (this.status === 'working' && this.profit) {
-      Object.keys(this.profit).forEach(profitType => {
-          game.player.addResources(profitType, this.getProfit(profitType))
-      })
+      player.addResources(this.getProfit())
 
       this.setNextTs()
     }

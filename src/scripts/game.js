@@ -1,3 +1,4 @@
+import 'pixi.js'
 import mitt from './utils/mitt'
 
 import Shop from './resources/shop'
@@ -8,6 +9,7 @@ export class Game {
   constructor({ resources = {}, levels = {}, tickInterval = 100, player = {}, shop = {} } = {}) {
     const emitter = mitt()
 
+    this.app = new PIXI.Application();
     this.ts = null
 
     this.tickInterval = tickInterval
@@ -47,10 +49,38 @@ export class Game {
     ];
   }
 
+  loadProgressHandler(loader, resource) {
+
+    //Display the file `url` currently being loaded
+    console.log("loading: " + resource.url);
+
+    //Display the precentage of files currently loaded
+    console.log("progress: " + loader.progress + "%");
+
+    //If you gave your files names as the first argument
+    //of the `add` method, you can access them like this
+    //console.log("loading: " + resource.name);
+  }
+
   start() {
-    setInterval(() => {
-      this.tick(Date.now())
-    }, this.tickInterval);
+    PIXI.loader
+      .add('grass', 'sprites/newgrass.png')
+      .on("progress", this.loadProgressHandler)
+      .load((loader, resources) => {
+        var bunny = new PIXI.Sprite(resources.grass.texture);
+
+        bunny.x = this.app.renderer.width / 2;
+        bunny.y = this.app.renderer.height / 2;
+
+        bunny.anchor.x = 0.5;
+        bunny.anchor.y = 0.5;
+
+        this.app.stage.addChild(bunny);
+
+        this.app.ticker.add(() => {
+          this.tick(Date.now())
+        });
+      });
   }
 }
 
